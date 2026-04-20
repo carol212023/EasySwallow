@@ -1,0 +1,466 @@
+import React, { useState, useEffect } from 'react';
+import { 
+  ChevronRight, 
+  Menu, 
+  X, 
+  BookOpen, 
+  Utensils, 
+  GraduationCap, 
+  ShoppingBag, 
+  Phone, 
+  Heart,
+  Star,
+  CheckCircle,
+  Clock,
+  ExternalLink
+} from 'lucide-react';
+
+// --- 模擬資料 ---
+const TEXTURE_LEVELS = [
+  { id: 7, name: '普通飲食', color: 'bg-black', desc: '不限質地' },
+  { id: 6, name: '軟質易製', color: 'bg-blue-400', desc: '可用叉子輕易壓斷' },
+  { id: 5, name: '細碎及濕軟', color: 'bg-orange-400', desc: '米粒大小，不需咀嚼' },
+  { id: 4, name: '泥狀飲食', color: 'bg-green-500', desc: '像馬鈴薯泥，無顆粒' },
+];
+
+const COURSES = [
+  {
+    title: "質地飲食入門班：在家也能做美味",
+    date: "2024/05/20 (一)",
+    location: "台北市大安區教學中心",
+    price: "NT$ 1,200",
+    image: "https://images.unsplash.com/photo-1556910103-1c02745aae4d?auto=format&fit=crop&q=80&w=800"
+  },
+  {
+    title: "進階吞嚥照顧：IDDSI 分級實作課",
+    date: "2024/06/15 (六)",
+    location: "線上直播課程",
+    price: "NT$ 800",
+    image: "https://images.unsplash.com/photo-1576091160550-2173dad99901?auto=format&fit=crop&q=80&w=800"
+  }
+];
+
+const RECIPES = [
+  {
+    title: "銀髮舒心燉肉 (IDDSI 6)",
+    tag: "高蛋白",
+    image: "https://images.unsplash.com/photo-1547592166-23ac45744acd?auto=format&fit=crop&q=80&w=800"
+  },
+  {
+    title: "南瓜濃湯慕斯 (IDDSI 4)",
+    tag: "好吞嚥",
+    image: "https://images.unsplash.com/photo-1476718406336-bb5a9690ee2a?auto=format&fit=crop&q=80&w=800"
+  }
+];
+
+const App = () => {
+  const [activeTab, setActiveTab] = useState('home');
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  // 滾動到頂部
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [activeTab]);
+
+  const Navigation = () => (
+    <nav className="bg-white shadow-md sticky top-0 z-50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between h-20">
+          <div className="flex items-center">
+            <div className="flex-shrink-0 flex items-center cursor-pointer" onClick={() => setActiveTab('home')}>
+              <div className="bg-green-600 p-2 rounded-lg mr-2">
+                <Utensils className="text-white" size={24} />
+              </div>
+              <span className="text-2xl font-bold text-gray-800">友膳食嚥家</span>
+            </div>
+          </div>
+          
+          {/* Desktop Menu */}
+          <div className="hidden md:flex items-center space-x-8">
+            <button onClick={() => setActiveTab('home')} className={`text-lg font-medium ${activeTab === 'home' ? 'text-green-600' : 'text-gray-600 hover:text-green-600'}`}>首頁</button>
+            <button onClick={() => setActiveTab('education')} className={`text-lg font-medium ${activeTab === 'education' ? 'text-green-600' : 'text-gray-600 hover:text-green-600'}`}>衛教知識</button>
+            <button onClick={() => setActiveTab('recipes')} className={`text-lg font-medium ${activeTab === 'recipes' ? 'text-green-600' : 'text-gray-600 hover:text-green-600'}`}>美味食譜</button>
+            <button onClick={() => setActiveTab('courses')} className={`text-lg font-medium ${activeTab === 'courses' ? 'text-green-600' : 'text-gray-600 hover:text-green-600'}`}>實體課程</button>
+            <button onClick={() => setActiveTab('shop')} className="bg-orange-500 text-white px-6 py-2 rounded-full font-bold hover:bg-orange-600 transition-colors">線上購買</button>
+          </div>
+
+          {/* Mobile menu button */}
+          <div className="md:hidden flex items-center">
+            <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="text-gray-600 p-2">
+              {isMenuOpen ? <X size={32} /> : <Menu size={32} />}
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Mobile Menu Content */}
+      {isMenuOpen && (
+        <div className="md:hidden bg-white border-t border-gray-100">
+          <div className="px-2 pt-2 pb-3 space-y-1">
+            <button onClick={() => { setActiveTab('home'); setIsMenuOpen(false); }} className="block w-full text-left px-4 py-4 text-xl text-gray-700 border-b">首頁</button>
+            <button onClick={() => { setActiveTab('education'); setIsMenuOpen(false); }} className="block w-full text-left px-4 py-4 text-xl text-gray-700 border-b">衛教知識</button>
+            <button onClick={() => { setActiveTab('recipes'); setIsMenuOpen(false); }} className="block w-full text-left px-4 py-4 text-xl text-gray-700 border-b">美味食譜</button>
+            <button onClick={() => { setActiveTab('courses'); setIsMenuOpen(false); }} className="block w-full text-left px-4 py-4 text-xl text-gray-700 border-b">實體課程</button>
+            <button onClick={() => { setActiveTab('shop'); setIsMenuOpen(false); }} className="block w-full text-center mt-4 mx-4 py-4 bg-orange-500 text-white rounded-xl font-bold">線上購買</button>
+          </div>
+        </div>
+      )}
+    </nav>
+  );
+
+  const Footer = () => (
+    <footer className="bg-gray-800 text-white pt-12 pb-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 border-b border-gray-700 pb-12">
+          <div>
+            <h3 className="text-2xl font-bold mb-4">友膳食嚥家</h3>
+            <p className="text-gray-400 text-lg leading-relaxed">
+              專注於推廣高齡質地飲食，我們致力於讓每一位長輩都能吃得安全、營養、更要美味。
+            </p>
+          </div>
+          <div>
+            <h4 className="text-xl font-bold mb-4">快速連結</h4>
+            <ul className="space-y-3 text-lg text-gray-400">
+              <li className="hover:text-white cursor-pointer" onClick={() => setActiveTab('education')}>質地分級介紹</li>
+              <li className="hover:text-white cursor-pointer" onClick={() => setActiveTab('recipes')}>精選食譜專區</li>
+              <li className="hover:text-white cursor-pointer" onClick={() => setActiveTab('courses')}>最新課程資訊</li>
+              <li className="hover:text-white cursor-pointer">關於我們</li>
+            </ul>
+          </div>
+          <div>
+            <h4 className="text-xl font-bold mb-4">聯繫我們</h4>
+            <div className="space-y-4">
+              <div className="flex items-center">
+                <Phone className="mr-3 text-green-400" size={20} />
+                <span className="text-lg">02-1234-5678</span>
+              </div>
+              <p className="text-lg text-gray-400">服務時間：週一至週五 09:00 - 18:00</p>
+              <div className="flex space-x-4 mt-4">
+                <div className="w-10 h-10 bg-green-600 rounded-full flex items-center justify-center hover:bg-green-500 cursor-pointer text-xl font-bold">LINE</div>
+                <div className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center hover:bg-blue-500 cursor-pointer text-xl font-bold">f</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="mt-8 text-center text-gray-500">
+          <p>© 2024 友膳食嚥家 版權所有</p>
+        </div>
+      </div>
+    </footer>
+  );
+
+  const HomeView = () => (
+    <div>
+      {/* Hero Section */}
+      <div className="relative bg-orange-50 py-16 md:py-24 overflow-hidden">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="md:w-1/2">
+            <span className="inline-block bg-green-100 text-green-700 px-4 py-1 rounded-full font-bold mb-4">友善吞嚥 · 幸福入口</span>
+            <h1 className="text-4xl md:text-6xl font-black text-gray-900 leading-tight mb-6">
+              讓長輩重拾<br />
+              <span className="text-orange-600">「吃」的樂趣</span>
+            </h1>
+            <p className="text-xl md:text-2xl text-gray-600 mb-8 leading-relaxed">
+              我們不只提供食品，更提供專業的質地飲食方案。<br />讓每一口飯菜，都成為尊嚴與健康的享受。
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4">
+              <button onClick={() => setActiveTab('shop')} className="bg-orange-500 text-white px-8 py-4 rounded-xl text-xl font-bold hover:bg-orange-600 shadow-lg flex items-center justify-center">
+                <ShoppingBag className="mr-2" /> 查看嚴選食品
+              </button>
+              <button onClick={() => setActiveTab('courses')} className="bg-white text-gray-800 border-2 border-gray-200 px-8 py-4 rounded-xl text-xl font-bold hover:bg-gray-50 flex items-center justify-center">
+                報名教學課程
+              </button>
+            </div>
+          </div>
+        </div>
+        <div className="hidden md:block absolute top-0 right-0 w-1/2 h-full">
+          <div className="h-full w-full bg-cover bg-center rounded-l-3xl" style={{ backgroundImage: 'url("https://images.unsplash.com/photo-1516714435131-44d6b64dc6a2?auto=format&fit=crop&q=80&w=1200")' }}>
+            <div className="absolute inset-0 bg-gradient-to-r from-orange-50 to-transparent"></div>
+          </div>
+        </div>
+      </div>
+
+      {/* Features */}
+      <div className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">我們能為您做什麼？</h2>
+            <p className="text-xl text-gray-500">專業、美味、安全，是我們對質地飲食的堅持</p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="bg-gray-50 p-8 rounded-3xl text-center hover:shadow-xl transition-shadow border-t-8 border-green-500">
+              <div className="bg-green-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
+                <GraduationCap className="text-green-600" size={32} />
+              </div>
+              <h3 className="text-2xl font-bold mb-4">專業實體課程</h3>
+              <p className="text-lg text-gray-600 leading-relaxed mb-6">
+                針對照顧者與長輩，教授如何正確調整食材質地，讓家常菜也能變身好吞口。
+              </p>
+              <button onClick={() => setActiveTab('courses')} className="text-green-600 font-bold text-lg flex items-center mx-auto">
+                了解更多 <ChevronRight size={20} />
+              </button>
+            </div>
+            <div className="bg-gray-50 p-8 rounded-3xl text-center hover:shadow-xl transition-shadow border-t-8 border-orange-500">
+              <div className="bg-orange-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
+                <Utensils className="text-orange-600" size={32} />
+              </div>
+              <h3 className="text-2xl font-bold mb-4">現成營養食譜</h3>
+              <p className="text-lg text-gray-600 leading-relaxed mb-6">
+                符合 IDDSI 國際標準的精選食譜，美味與營養兼具，步驟簡單好上手。
+              </p>
+              <button onClick={() => setActiveTab('recipes')} className="text-orange-600 font-bold text-lg flex items-center mx-auto">
+                瀏覽食譜 <ChevronRight size={20} />
+              </button>
+            </div>
+            <div className="bg-gray-50 p-8 rounded-3xl text-center hover:shadow-xl transition-shadow border-t-8 border-blue-500">
+              <div className="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
+                <ShoppingBag className="text-blue-600" size={32} />
+              </div>
+              <h3 className="text-2xl font-bold mb-4">質地友善食品</h3>
+              <p className="text-lg text-gray-600 leading-relaxed mb-6">
+                嚴選現成食品，開袋即食。解決忙碌照顧者的煩惱，讓長輩餐餐期待。
+              </p>
+              <button onClick={() => setActiveTab('shop')} className="text-blue-600 font-bold text-lg flex items-center mx-auto">
+                立即購買 <ChevronRight size={20} />
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* IDDSI Preview Section */}
+      <div className="bg-gray-100 py-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col md:flex-row items-center gap-12">
+            <div className="md:w-1/2">
+              <h2 className="text-3xl md:text-4xl font-bold mb-6 text-gray-900">認識質地分級 (IDDSI)</h2>
+              <p className="text-xl text-gray-600 mb-8 leading-relaxed">
+                不同的吞嚥困難程度需要不同質地的食物。我們依據國際 IDDSI 分級，為您提供最精確的分類建議。
+              </p>
+              <div className="space-y-4">
+                {TEXTURE_LEVELS.map(level => (
+                  <div key={level.id} className="flex items-center bg-white p-4 rounded-xl shadow-sm">
+                    <div className={`${level.color} text-white w-12 h-12 rounded-lg flex items-center justify-center font-bold text-xl mr-4`}>
+                      {level.id}
+                    </div>
+                    <div>
+                      <h4 className="text-xl font-bold text-gray-800">{level.name}</h4>
+                      <p className="text-gray-500 text-lg">{level.desc}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <button onClick={() => setActiveTab('education')} className="mt-8 bg-green-600 text-white px-8 py-3 rounded-xl text-lg font-bold">查看完整衛教手冊</button>
+            </div>
+            <div className="md:w-1/2">
+              <div className="bg-white p-6 rounded-3xl shadow-2xl relative">
+                <img 
+                  src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&q=80&w=800" 
+                  alt="美味餐點" 
+                  className="rounded-2xl w-full h-96 object-cover"
+                />
+                <div className="absolute -bottom-6 -left-6 bg-orange-500 text-white p-6 rounded-2xl shadow-lg">
+                  <p className="text-2xl font-bold">"軟質不等於糊爛"</p>
+                  <p className="text-lg opacity-90">我們堅持食物原味與美感</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
+  const EducationView = () => (
+    <div className="py-16 bg-white min-h-screen">
+      <div className="max-w-4xl mx-auto px-4">
+        <div className="text-center mb-16">
+          <h1 className="text-4xl font-black text-gray-900 mb-4">質地飲食衛教專區</h1>
+          <p className="text-xl text-gray-600">讓照顧更科學，讓進食更安心</p>
+        </div>
+
+        <section className="mb-16">
+          <h2 className="text-3xl font-bold text-gray-800 mb-6 flex items-center">
+            <Heart className="text-red-500 mr-2" /> 為什麼質地分級很重要？
+          </h2>
+          <div className="prose prose-lg text-gray-700 max-w-none space-y-6">
+            <p className="text-xl leading-relaxed">
+              對於吞嚥功能衰退的長輩，若食物質地不當（太硬、太黏或太稀），極易發生誤吸、嗆咳，甚至引發吸入性肺炎。透過 IDDSI (國際吞嚥障礙飲食標準) 的分級，我們可以精準地調整食物的軟硬度、黏稠度與顆粒大小。
+            </p>
+            <div className="bg-yellow-50 p-6 rounded-2xl border-l-8 border-yellow-400">
+              <h4 className="text-xl font-bold text-yellow-800 mb-2">安全提醒：</h4>
+              <p className="text-lg text-yellow-900">若長輩進食時頻繁嗆咳、含著不吞或有明顯痰音，請務必尋求語言治療師進行專業評估。</p>
+            </div>
+          </div>
+        </section>
+
+        <section className="mb-16">
+          <h2 className="text-3xl font-bold text-gray-800 mb-8">在家如何測試質地？</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="border-2 border-gray-100 p-8 rounded-3xl">
+              <h3 className="text-2xl font-bold mb-4 flex items-center text-blue-600">
+                <CheckCircle className="mr-2" /> 叉子測試 (Forks Test)
+              </h3>
+              <p className="text-lg text-gray-600 leading-relaxed mb-4">
+                使用叉子背面輕壓食物，看是否能輕易切斷，或觀察食物是否會從叉齒縫隙流出。
+              </p>
+              <img src="https://images.unsplash.com/photo-1574966739982-2b783cb18ad7?auto=format&fit=crop&q=80&w=400" className="rounded-xl w-full h-48 object-cover" alt="測試方法" />
+            </div>
+            <div className="border-2 border-gray-100 p-8 rounded-3xl">
+              <h3 className="text-2xl font-bold mb-4 flex items-center text-orange-600">
+                <CheckCircle className="mr-2" /> 湯匙傾斜測試
+              </h3>
+              <p className="text-lg text-gray-600 leading-relaxed mb-4">
+                傾斜湯匙，觀察泥狀食物是否能成塊滑落，而不應在湯匙上留下明顯殘渣。
+              </p>
+              <img src="https://images.unsplash.com/photo-1542691457-cbe4df041eb2?auto=format&fit=crop&q=80&w=400" className="rounded-xl w-full h-48 object-cover" alt="測試方法" />
+            </div>
+          </div>
+        </section>
+
+        <div className="text-center">
+          <button className="bg-green-600 text-white px-10 py-4 rounded-2xl text-xl font-bold hover:bg-green-700 shadow-lg">
+            下載完整衛教 PDF 手冊
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+
+  const RecipesView = () => (
+    <div className="py-16 bg-gray-50 min-h-screen">
+      <div className="max-w-7xl mx-auto px-4">
+        <div className="text-center mb-16">
+          <h1 className="text-4xl font-black text-gray-900 mb-4">美味食譜專區</h1>
+          <p className="text-xl text-gray-600">誰說軟食不好吃？這裡有色香味俱全的驚喜</p>
+        </div>
+
+        <div className="flex flex-wrap justify-center gap-4 mb-12">
+          {['全部', 'IDDSI 7', 'IDDSI 6', 'IDDSI 5', 'IDDSI 4'].map(cat => (
+            <button key={cat} className={`px-6 py-2 rounded-full text-lg font-bold border-2 transition-all ${cat === '全部' ? 'bg-orange-500 text-white border-orange-500' : 'bg-white text-gray-600 border-gray-200 hover:border-orange-500'}`}>
+              {cat}
+            </button>
+          ))}
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {RECIPES.map((recipe, idx) => (
+            <div key={idx} className="bg-white rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all group">
+              <div className="relative h-64">
+                <img src={recipe.image} alt={recipe.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                <div className="absolute top-4 left-4 bg-white/90 backdrop-blur px-4 py-1 rounded-full font-bold text-orange-600">
+                  {recipe.tag}
+                </div>
+              </div>
+              <div className="p-8">
+                <h3 className="text-2xl font-bold text-gray-800 mb-4">{recipe.title}</h3>
+                <div className="flex justify-between items-center text-gray-500 mb-6">
+                  <span className="flex items-center"><Clock size={18} className="mr-1" /> 30分鐘</span>
+                  <span className="flex items-center"><Star size={18} className="mr-1 text-yellow-500" /> 中級</span>
+                </div>
+                <button className="w-full py-3 bg-gray-100 text-gray-700 rounded-xl font-bold hover:bg-orange-500 hover:text-white transition-colors">
+                  查看完整食譜
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+
+  const CoursesView = () => (
+    <div className="py-16 bg-white min-h-screen">
+      <div className="max-w-7xl mx-auto px-4">
+        <div className="text-center mb-16">
+          <h1 className="text-4xl font-black text-gray-900 mb-4">實體教學課程</h1>
+          <p className="text-xl text-gray-600">手把手教學，將專業照護落實於日常生活</p>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+          {COURSES.map((course, idx) => (
+            <div key={idx} className="flex flex-col md:flex-row bg-orange-50 rounded-3xl overflow-hidden shadow-md">
+              <img src={course.image} alt={course.title} className="md:w-1/2 h-64 md:h-auto object-cover" />
+              <div className="p-8 md:w-1/2 flex flex-col justify-between">
+                <div>
+                  <h3 className="text-2xl font-bold text-gray-900 mb-4 leading-snug">{course.title}</h3>
+                  <div className="space-y-3 mb-6">
+                    <p className="text-lg text-gray-600 flex items-center"><Clock className="mr-2 text-orange-500" size={20} /> {course.date}</p>
+                    <p className="text-lg text-gray-600 flex items-center"><CheckCircle className="mr-2 text-orange-500" size={20} /> {course.location}</p>
+                  </div>
+                  <div className="text-3xl font-black text-orange-600 mb-6">{course.price}</div>
+                </div>
+                <button className="w-full bg-orange-500 text-white py-4 rounded-xl text-xl font-bold hover:bg-orange-600">
+                  立即報名
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div className="mt-20 bg-green-50 rounded-3xl p-8 md:p-12 text-center">
+          <h2 className="text-3xl font-bold text-green-900 mb-4">想為機構預約團體包班？</h2>
+          <p className="text-xl text-green-800 mb-8 max-w-2xl mx-auto">
+            我們提供醫院、養護機構、社區據點的專業包班課程。協助照護團隊提升質地飲食製備技能。
+          </p>
+          <button className="bg-green-600 text-white px-10 py-4 rounded-xl text-xl font-bold shadow-lg hover:bg-green-700">
+            聯繫合作洽詢
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+
+  const ShopView = () => (
+    <div className="py-16 bg-gray-50 min-h-screen">
+      <div className="max-w-7xl mx-auto px-4 text-center">
+        <h1 className="text-4xl font-black text-gray-900 mb-8">友膳食專區</h1>
+        <div className="bg-white p-12 rounded-3xl shadow-xl max-w-3xl mx-auto border-2 border-orange-100">
+          <ShoppingBag className="mx-auto text-orange-400 mb-6" size={80} />
+          <h2 className="text-3xl font-bold mb-4">線上商城準備中</h2>
+          <p className="text-xl text-gray-600 mb-8 leading-relaxed">
+            我們正在進行最後的食品包裝與檢測工作。<br />
+            包含「銀髮調理包」、「高效稠化劑」與「質地測試器」即將上線！
+          </p>
+          <div className="bg-orange-50 p-6 rounded-2xl mb-8">
+            <p className="text-lg font-bold text-orange-800 mb-2">留下您的聯絡資訊，上線時第一時間通知您並送上開館優惠券！</p>
+            <div className="flex flex-col sm:flex-row gap-4 mt-4">
+              <input type="email" placeholder="您的電子信箱" className="flex-1 px-6 py-3 rounded-xl border-2 border-orange-200 outline-none focus:border-orange-500" />
+              <button className="bg-orange-500 text-white px-8 py-3 rounded-xl font-bold text-lg">訂閱通知</button>
+            </div>
+          </div>
+          <div className="flex justify-center space-x-4">
+             <span className="flex items-center text-gray-400"><CheckCircle size={18} className="mr-1"/> 國際標準認證</span>
+             <span className="flex items-center text-gray-400"><CheckCircle size={18} className="mr-1"/> 營養師監製</span>
+             <span className="flex items-center text-gray-400"><CheckCircle size={18} className="mr-1"/> 產地直送</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
+  return (
+    <div className="font-sans text-gray-900 bg-gray-50">
+      <Navigation />
+      
+      <main>
+        {activeTab === 'home' && <HomeView />}
+        {activeTab === 'education' && <EducationView />}
+        {activeTab === 'recipes' && <RecipesView />}
+        {activeTab === 'courses' && <CoursesView />}
+        {activeTab === 'shop' && <ShopView />}
+      </main>
+
+      {/* Floating Contact CTA (Mobile) */}
+      <div className="md:hidden fixed bottom-6 right-6 z-40">
+        <button className="bg-green-600 text-white p-4 rounded-full shadow-2xl flex items-center justify-center">
+          <Phone size={24} />
+        </button>
+      </div>
+
+      <Footer />
+    </div>
+  );
+};
+
+export default App;
